@@ -41,7 +41,7 @@ function searchPeopleDataSet(people) {
             break;
         case 'traits':
             //! TODO
-            // results = searchByTraits(people);
+            results = searchByTraits(people);
             break;
         default:
             return searchPeopleDataSet(people);
@@ -49,6 +49,59 @@ function searchPeopleDataSet(people) {
 
     return results;
 }
+function searchByTraits(people) {
+    
+    const traitChoices = validatedPrompt(
+        'Please choose a trait to search by.',
+        ['gender', 'eye color', 'height', 'weight', 'occupation', 'DOB', 'reset', 'done']
+    );
+
+    let results = [];
+    switch(traitChoices) {
+        case 'gender':
+            const genderSearch = prompt('Please enter the gender of the individual.')
+            results = people.filter(person => person.gender === genderSearch);
+            break;
+
+        case 'eye color':
+            const eyeColorSerach = prompt('Please enter the eye color of the individual.')
+            results = people.filter(person => person.eyeColor === eyeColorSerach);
+            break;
+
+        case 'height':
+            const heightSearch = prompt('Please enter the approximate height(in inches) of the individual.')
+            const heightSearchInt = parseInt(heightSearch);
+            results = people.filter(person => person.height === heightSearchInt);
+            break;
+
+        case 'weight':
+            const weightSearch = prompt('Please enter the approximate weight(in pounds) of the individual.')
+            const weightSearchInt = parseInt(weightSearch)
+            results = people.filter(person => person.weight === weightSearchInt);
+            break;
+
+        case 'occupation':
+            const occupationSearch = validatedPrompt(
+                'Please select an occupation.',
+                ['assistant', 'programmer', 'landscaper', 'nurse', 'doctor', 'student', 'architect', 'politician']
+            );
+            results = people.filter(person => person.occupation === occupationSearch);
+            break;
+
+        case 'DOB':
+            const dobSearch = prompt('Please enter the date of birth of the individual(mm/dd/yy).')
+            results = people.filter(person => person.dob === traitChoices);
+            break;
+        case 'done':
+            return exitOrRestart(people);
+
+        case 'reset':
+            return searchByTraits(people);
+    }
+    
+    return results;
+}
+
 
 function searchById(people) {
     const idToSearchForString = prompt('Please enter the id of the person you are searching for.');
@@ -74,17 +127,17 @@ function mainMenu(person, people) {
     switch (mainMenuUserActionChoice) {
         case "info":
             //! TODO
-            // displayPersonInfo(person);
+            displayPersonInfo(person);
             break;
         case "family":
             //! TODO
-            // let personFamily = findPersonFamily(person, people);
-            // displayPeople('Family', personFamily);
+            let personFamily = findPersonFamily(person, people);
+            displayPeople('Family', personFamily);
             break;
         case "descendants":
             //! TODO
-            // let personDescendants = findPersonDescendants(person, people);
-            // displayPeople('Descendants', personDescendants);
+            let personDescendants = findPersonDescendants(person, people);
+            displayPeople('Descendants', personDescendants);
             break;
         case "quit":
             return;
